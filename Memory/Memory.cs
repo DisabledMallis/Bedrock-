@@ -1463,6 +1463,7 @@ namespace Memory
             UIntPtr caveAddress = UIntPtr.Zero;
             UIntPtr prefered = address;
 
+            Console.WriteLine("Searching for free space in memory...");
             for (var i = 0; i < 10 && caveAddress == UIntPtr.Zero; i++)
             {
                 caveAddress = VirtualAllocEx(pHandle, FindFreeBlockForRegion(prefered, (uint)newBytes.Length),
@@ -1472,6 +1473,7 @@ namespace Memory
                     prefered = UIntPtr.Add(prefered, 0x10000);
             }
 
+            Console.WriteLine("None found, letting windows allocate memory.");
             // Failed to allocate memory around the address we wanted let windows handle it and hope for the best?
             if (caveAddress == UIntPtr.Zero)
                 caveAddress = VirtualAllocEx(pHandle, UIntPtr.Zero, (uint)size, MEM_COMMIT | MEM_RESERVE,
